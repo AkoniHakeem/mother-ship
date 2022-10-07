@@ -1,0 +1,14 @@
+# node modules
+node_modules/
+
+# notes
+*.note
+
+# sql Debug
+sqlDebug.sql
+
+# env
+.env
+
+# dist
+dist/
