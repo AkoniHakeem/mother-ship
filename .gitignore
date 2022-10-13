@@ -12,3 +12,6 @@ sqlDebug.sql
 
 # dist
 dist/
+
+# typeorm
+src/migration/

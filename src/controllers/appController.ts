@@ -81,4 +81,10 @@ export default class AppController {
         // return not allowed response when user email 
         // or reference already exist on user or app - user
     }
+
+    @Routes('/auth/signin')
+    @handleRequest({ readBody: true })
+    async signin(res: HttpResponseHandler): Promise<void> {
+        
+    }
 }

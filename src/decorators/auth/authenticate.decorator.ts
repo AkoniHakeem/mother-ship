@@ -20,6 +20,7 @@ export function authenticate(
 
     descriptor.value = async function (...args: unknown[]) {
       let authenticated = false;
+      let data: undefined | { message: string };
 
       /* get res argument */
       const res = [...args].shift() as HttpResponseHandler;
@@ -32,7 +33,7 @@ export function authenticate(
           if (isObject(jwtPayload)) {
             //Ensure jwt payload is not empty
             if (!isEmpty(jwtPayload)) {
-              const { userData, profile = undefined, exp } = jwtPayload as AuthPayload;
+              const { userData, profile = undefined, exp, appData } = jwtPayload as AuthPayload;
               // if (userData && profile) {
               //   const profileSummary = await ProfileService.getProfileSummary(userData.id, profile.profileCollectionId);
               //   set(jwtPayload, 'profile', profileSummary);
@@ -53,8 +54,19 @@ export function authenticate(
               //   }
               // }
 
+              if (appData) {
+                // check that app and user exist
+                // const appDetails = await db().
+                authenticated = true;
+                  let expiry: number | undefined = exp;
+                  const epoch = floor(Date.now() / 1000);
+                  if (expiry && epoch > expiry) {
+                    authenticated = false;
+                    data = { message: 'Token expired'}
+                  } 
+              }
+
               res.authTokenPayload = jwtPayload as AuthPayload;
-              authenticated = true;
             }
             
           }

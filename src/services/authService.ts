@@ -3,6 +3,9 @@ import * as cryptoServices from './cryptoServices';
 import { AuthPayload } from '../lib/types';
 import { makeRequest } from '../lib/helpers';
 import { iDTO } from '../handlers/iDTO';
+import { db } from './databaseServie';
+import App from '../entities/App';
+import User from '../entities/User';
 
 export const requestAuth = async (
   urlPath: string,
@@ -34,6 +37,18 @@ export const requestAuthService = async (
     throw error;
   }
 };
+
+export const confirmAppDetails = async(appId: string, userId: string): Promise<boolean> => {
+let appDetailsExist = false;
+const appDetails = (await db().createQueryBuilder(App, 'app')
+.select('app.id', 'appId')
+.innerJoin(User, 'user', 'user.id = :userId')
+.where('app.id = :appId', { appId, userId })
+.getRawOne()) as { appId: string};
+
+appDetailsExist = !!appDetails;
+return appDetailsExist;
+}
 
 export const signAuthPayload = (payload: AuthPayload, expiry?: number | string): string => {
   return cryptoServices.signPayload(payload, expiry);
