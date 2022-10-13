@@ -72,7 +72,7 @@ specifiers:
   pino: ^7.11.0
   pino-pretty: ^7.6.1
   pm2: ^5.2.0
-  prettier: ^2.6.2
+  prettier: ^2.7.1
   qs: ^6.10.3
   randomstring: ^1.2.2
   reflect-metadata: ^0.1.13

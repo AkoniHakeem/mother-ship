@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { parse } from 'secure-json-parse'
 import { JWT_SECRET } from '../lib/projectConstants';
 
 const jwtSecret = JWT_SECRET;
@@ -24,7 +25,7 @@ export const signPayload = <T extends Record<string, unknown>>(payload: T, expir
 export const validateJwtToken = <T extends string, R extends Record<string, unknown>>(token: T): R | undefined => {
   try {
     const payload = jwt.verify(token, jwtSecret);
-    return payload as R;
+    return parse(payload as string) as R;
   } catch (e) {
     return undefined;
   }

@@ -8,6 +8,8 @@ import { Route } from './lib/types';
 import { ErrorCodes } from './errors/errorCodes';
 import { get, isArray, isFunction } from 'lodash';
 import { connectDataSourceFor } from './services/databaseServie';
+import path from 'path';
+import { readdir } from 'fs/promises';
 
 export const app = App();
 
@@ -16,12 +18,20 @@ async function launch() {
     await connectDataSourceFor('default');
     flagDuplicateEnumCodes(ErrorCodes);
 
-    const loadControllers = () => {
-      // const 
+    const loadControllers = async (): Promise<{ new(): unknown; boot?: () => void | Promise<void> }[]> => {
+      const getFileOrFolderPath = (fileName: string) => path.resolve(__dirname, path.resolve(__dirname, fileName));
+      const folderName = 'controllers'
+      const filePath = getFileOrFolderPath(folderName);
+      const files = await readdir(filePath);
+      const fileterdFiles = files.filter((file) => /.js$/.test(file))
+      return await Promise.all(fileterdFiles.map(async (file) => {
+          const pathToTile = getFileOrFolderPath(`${folderName}/${file}`);
+          return (await import(pathToTile)).default
+        }));
     }
 
     /* register controller */
-    const controllers: { new (): unknown; boot?: () => void | Promise<void> }[] = [];
+    const controllers: { new (): unknown; boot?: () => void | Promise<void> }[] = await loadControllers();
 
     /* connect the routers */
 

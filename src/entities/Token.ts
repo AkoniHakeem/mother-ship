@@ -11,7 +11,7 @@ export default class Token {
     @Column({ type: 'varchar'})
     valueOfToken: string;
 
-    @Column({ type: 'numeric'})
+    @Column({ type: 'numeric', nullable: true})
     expiry: number;
 
     @Column({ type: 'enum', enum: TokenCreationPurpose})

@@ -8,7 +8,7 @@ export default class App {
 
     @Column({ type: 'varchar', length: 255 })
     name: string;
-
+    
     @Column({ type: 'boolean', default: false})
     requireIdentityValidation: boolean;
 

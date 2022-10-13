@@ -1,27 +1,25 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import AppUser from "./AppUser";
 import User from "./User";
 
 @Entity()
-export default class Location {
+export default class AppUserLocation {
 
     /**
      * Last user's Location. This is a geographic location - long and lat.
      */
     @Column({ type: 'varchar', nullable: false })
-    lastLocation: string;
+    previousLocation: string;
 
     @CreateDateColumn()
     createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
-
     // foregin keys
     @PrimaryColumn({ type: 'bigint'})
-    userId: string;
+    appUserId: string;
 
     // relations
-    @OneToOne(() => User, (user) => user.lastLocation)
+    @OneToOne(() => AppUser, (user) => user.previousLocations)
     @JoinColumn({ name: 'userId'})
-    user: User;
+    appUser: AppUser;
 }

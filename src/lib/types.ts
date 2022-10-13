@@ -31,8 +31,14 @@ export type GCaptChaResponse = {
 export type AuthPayload = {
   userData?: AuthenticatedUserData;
   profile?: null;
+  project?: AuthUserProject;
   appData?: AuthenticatedAppData;
   exp?: number;
+};
+
+export type AuthUserProject = {
+  id: string;
+  name: string;
 };
 
 export type AuthenticatedAppData = {

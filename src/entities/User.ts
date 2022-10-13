@@ -1,9 +1,8 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import UserCountryRelationships from "../lib/enums/userCountryRelationships.enum";
-import Address from "./UserContactAddress";
 import UserContactAddress from "./UserContactAddress";
 import UsersCountries from "./UsersCountries";
-import Location from "./Location";
+import AppUserLocation from "./AppUserLocation";
 import AppUser from "./AppUser";
 import ProjectUser from "./ProjectUser";
 
@@ -38,14 +37,14 @@ export default class User {
     @OneToMany(() => UsersCountries, (usersCountries) => usersCountries.user)
     usersCountries: UsersCountries[];
 
-    @OneToMany(() => Address, (users) => users)
-    addresses: UserContactAddress;
+    @OneToMany(() => UserContactAddress, (contactAddress) => contactAddress.user)
+    addresses: UserContactAddress[];
 
-    @OneToMany(() => Location, (location) => location.user)
-    lastLocation: Location;
+    // @OneToMany(() => Location, (location) => location.user)
+    // lastLocation: Location;
 
     @OneToMany(() => AppUser, (appUser) => appUser.user)
-    appUsers: AppUser[];
+    userApps: AppUser[];
 
     @OneToMany(() => ProjectUser, (projectUser) => projectUser.user)
     projectUsers: ProjectUser[];

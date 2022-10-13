@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import UserCountryRelationships from "../lib/enums/userCountryRelationships.enum";
 import { PhoneNumber } from "../lib/types";
+import AppUser from "./AppUser";
 import City from "./City";
 import Country from "./Country";
 import Street from "./Street";
@@ -18,7 +19,7 @@ export default class UsersCountries {
     phoneNumber: PhoneNumber[] | null;
 
     // foregin keys
-    @Column({ type: 'bigint', nullable: false })
+    @Column({ type: 'bigint', nullable: true })
     userId: string;
 
     @Column({ type: 'bigint', nullable: false })
@@ -29,6 +30,9 @@ export default class UsersCountries {
 
     @Column({ type: "bigint", nullable: true })
     streetId: string | null;
+
+    @Column({ type: "bigint", nullable: true })
+    appUserId: string | null;
 
     // relations
     @ManyToOne(() => Country, (country) => country.userContries)
@@ -46,5 +50,9 @@ export default class UsersCountries {
     @ManyToOne(() => Street, (street) => street.usersCountries)
     @JoinColumn({ name: 'streetId'})
     street: Street | null;
+
+    @ManyToOne(() => AppUser, (appUser) => appUser.appUsersCountries)
+    @JoinColumn({ name: 'appUserId'})
+    appUser: AppUser;
 
 }

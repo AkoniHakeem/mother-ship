@@ -35,6 +35,7 @@ export type ProcessEnv = {
   DB_NAME: string;
   DB_CONN_POOL_COUNT: number;
   PROJECT_NAME: string;
+  PASSWORD_SALTROUNDS: number;
 };
 
 import path, { dirname, join } from 'path';
@@ -50,6 +51,8 @@ expand(
 const processEnvObj = process.env as unknown as ProcessEnv;
 
 // console.log('The following variables has been loaded', processEnvObj)
+
+export const PASSWORD_SALTROUNDS = Number(processEnvObj.PASSWORD_SALTROUNDS);
 
 export const SERVER_HOST = processEnvObj.SERVER_HOST;
 
