@@ -4,6 +4,7 @@ import { HttpResponseHandler } from '../../handlers/ResponseHandler';
 import { handleUnauthenticatedAccess } from '../../lib/helpers';
 // import { signAuthPayload } from '../../services/authService';
 import { validateJwtToken } from '../../services/cryptoServices';
+import { confirmAppDetails } from '../../services/authService';
 // import { ProfileService } from '../../services/Profiles/profileService';
 
 export function authenticate(
@@ -33,7 +34,7 @@ export function authenticate(
           if (isObject(jwtPayload)) {
             //Ensure jwt payload is not empty
             if (!isEmpty(jwtPayload)) {
-              const { userData, profile = undefined, exp, appData } = jwtPayload as AuthPayload;
+              const { userData, profile = undefined, exp, appData, project } = jwtPayload as AuthPayload;
               // if (userData && profile) {
               //   const profileSummary = await ProfileService.getProfileSummary(userData.id, profile.profileCollectionId);
               //   set(jwtPayload, 'profile', profileSummary);
@@ -54,16 +55,17 @@ export function authenticate(
               //   }
               // }
 
-              if (appData) {
+              if (project && appData) {
                 // check that app and user exist
-                // const appDetails = await db().
-                authenticated = true;
+                authenticated = await confirmAppDetails(appData.id, appData.creatorUserId, project.id);
+                if (authenticated) {
                   let expiry: number | undefined = exp;
                   const epoch = floor(Date.now() / 1000);
                   if (expiry && epoch > expiry) {
                     authenticated = false;
                     data = { message: 'Token expired'}
                   } 
+                }
               }
 
               res.authTokenPayload = jwtPayload as AuthPayload;

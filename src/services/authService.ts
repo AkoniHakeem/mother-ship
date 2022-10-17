@@ -38,16 +38,31 @@ export const requestAuthService = async (
   }
 };
 
-export const confirmAppDetails = async(appId: string, userId: string): Promise<boolean> => {
+export const confirmAppDetails = async(appId: string, userId: string, projectId: string): Promise<boolean> => {
 let appDetailsExist = false;
 const appDetails = (await db().createQueryBuilder(App, 'app')
 .select('app.id', 'appId')
 .innerJoin(User, 'user', 'user.id = :userId')
-.where('app.id = :appId', { appId, userId })
+.where('app.id = :appId and app.projectId = :projectId', { appId, userId, projectId })
 .getRawOne()) as { appId: string};
 
 appDetailsExist = !!appDetails;
 return appDetailsExist;
+}
+
+export const getExistingAppUser = async (userEmail: string, appId: string): Promise<{ userId: string; appUserId: string; email: string; passwordHash: string } | null> => {
+  const existingUser = await db().createQueryBuilder(User, 'user')
+  .select('user.id', 'userId')
+  .addSelect('appUser.id', 'appUserId')
+  .addSelect('user.email', 'email')
+  .addSelect('appUser.password', 'passwordHash')
+  .innerJoin('user.userApps', 'appUser', 'user.id = appUser.userId and appUser.id = :appId')
+  .where('user.email = :userEmail', { userEmail, appId })
+  .groupBy('user.id')
+  .addGroupBy('appUser.id')
+  .getRawOne()
+
+  return existingUser;
 }
 
 export const signAuthPayload = (payload: AuthPayload, expiry?: number | string): string => {

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
 import AppUser from "./AppUser";
+import Token from "./Token";
 
 @Entity()
 export default class App {
@@ -18,14 +19,13 @@ export default class App {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    // foreign keys
-    @Column({ type: 'bigint'})
-    tokenId: string;
-
     @Column({ type: 'bigint'})
     projectId: string;
     
     // relations
     @OneToMany(() => AppUser, (appUser) => appUser.app)
     appUsers: AppUser[];
+
+    @OneToMany(() => Token, (token) => token.app)
+    tokens: Token[];
 }

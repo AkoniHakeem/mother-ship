@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import AppUser from "./AppUser";
+// import AppUser from "./AppUser";
 import ProjectUser from "./ProjectUser";
 
 @Entity()
@@ -25,6 +25,6 @@ export default class Project {
     @OneToMany(() => ProjectUser, (projectUser) => projectUser.project)
     projectUsers: ProjectUser[];
 
-    @OneToMany(() => AppUser, (appUser) => appUser.project)
-    appUsers: AppUser[];
+    // @OneToMany(() => AppUser, (appUser) => appUser.project)
+    // appUsers: AppUser[];
 }

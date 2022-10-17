@@ -2,7 +2,6 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMan
 import UserCountryRelationships from "../lib/enums/userCountryRelationships.enum";
 import UserContactAddress from "./UserContactAddress";
 import UsersCountries from "./UsersCountries";
-import AppUserLocation from "./AppUserLocation";
 import AppUser from "./AppUser";
 import ProjectUser from "./ProjectUser";
 
@@ -17,10 +16,9 @@ export default class User {
     @Column({ type: 'varchar', default: ''})
     lastName: string;
 
-    @Column({type: 'varchar', nullable: false})
+    @Column({type: 'varchar', nullable: false, unique: true })
     email: string;
 
-    // foreign key
     @CreateDateColumn()
     createdAt: Date;
 

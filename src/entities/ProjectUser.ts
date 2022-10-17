@@ -21,7 +21,7 @@ export default class ProjectUser {
     @Column({ type: 'bigint'})
     userId: string;
 
-    @Column({ type: 'bigint'})
+    @Column({ type: 'bigint', nullable: true})
     projectId: string;
 
     // relations

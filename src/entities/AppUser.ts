@@ -35,8 +35,8 @@ export default class AppUser {
     @Column({ type: 'bigint',})
     userId: string;
 
-    @Column({ type: 'bigint'})
-    projectId: string;
+    // @Column({ type: 'bigint'})
+    // projectId: string;
 
     // relations
     @ManyToOne(() => App, (app) => app.appUsers)
@@ -47,9 +47,9 @@ export default class AppUser {
     @JoinColumn({ name: 'userId'})
     user: User;
 
-    @ManyToOne(() => Project, (project) => project.appUsers)
-    @JoinColumn({ name: 'projectId'})
-    project: Project;
+    // @ManyToOne(() => Project, (project) => project.appUsers)
+    // @JoinColumn({ name: 'projectId'})
+    // project: Project;
 
     @OneToMany(() => Token, (token) => token.appUser)
     tokens: Token[];
