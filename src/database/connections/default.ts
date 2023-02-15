@@ -17,7 +17,7 @@ export const getPool = () => pool;
 dataSource
   .initialize()
   .then(() => {
-    pool = get(dataSource.driver, 'master') as Pool;
+    pool = get(dataSource.driver,'master') as unknown as Pool;
   })
   .catch((err) => {
     console.error('Error during Default Data Source initialization', err);
